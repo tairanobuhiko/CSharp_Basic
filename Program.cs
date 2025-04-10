@@ -6,12 +6,10 @@ class Program
 {
   static void Main()
   {
-    String input = Console.ReadLine();
-    List<String> strs = input.Split(" ").ToList();
-    int count = strs.Count;
-    for (int i = 0; i < count; i++)
-    {
-      Console.WriteLine(strs[i]);
-    }
+    SamplePrint((38, "Taira"));
+  }
+  static void SamplePrint((int age, String name) sample)
+  {
+    Console.WriteLine($"私の名前は{sample.name}です。年齢は{sample.age}歳です");
   }
 }
