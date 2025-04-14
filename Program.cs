@@ -7,55 +7,73 @@ class Program
 {
   static void Main()
   {
-    List<User> users = new List<User>();
-    string input = Console.ReadLine();
-    List<string> inputs = input.Split(" ").ToList();
+    string[] input = Console.ReadLine().Split(" ");
+    int N = int.Parse(input[0]);
+    int K = int.Parse(input[1]);
 
-    int n = int.Parse(inputs[0]);
-    int k = int.Parse(inputs[1]);
-
-    // 名簿リストへの登録
-    for (int i = 0; i < n; i++)
+    // 客数定義
+    List<Customer> customers = new List<Customer>();
+    for (int i = 0; i < N; i++)
     {
-      string[] memberInfo = Console.ReadLine().Split(" ");
-      User user = new User(memberInfo[0], int.Parse(memberInfo[1]), memberInfo[2], memberInfo[3]);
-      users.Add(user);
+      Customer customer = new Customer(int.Parse(Console.ReadLine()));
+      customers.Add(customer);
     }
 
-    // 名簿の更新
-    for (int i = 0; i < k; i++)
+    // 注文ロジック
+    for (int i = 0; i < K; i++)
     {
-      string[] target = Console.ReadLine().Split(" ");
-      int targetNum = int.Parse(target[0]) - 1;
-      string updateName = target[1];
-      users[targetNum].ChangeName(updateName);
+      string[] orders = Console.ReadLine().Split(" ");
+      int index = int.Parse(orders[0]) - 1;
+      string category = orders[1];
+      int price = int.Parse(orders[2]);
+
+      customers[index].Order(category, price);
     }
 
-    // 名簿の出力
-    foreach (User user in users)
+    // 会計出力
+    foreach (Customer customer in customers)
     {
-      Console.WriteLine($"{user.nickname} {user.old} {user.birth} {user.state}");
+      Console.WriteLine(customer.Payment);
     }
   }
 }
 
-class User
-{
-  public string nickname { get; set; } = string.Empty;
-  public int old { get; set; } = 0;
-  public string birth { get; set; } = "YYYY/MM/DD";
-  public string state { get; set; } = string.Empty;
+// # 要件
+// 20歳未満はアルコール注文が取り消される
+// アルコール注文以降は食事のみ¥200割引き
+// 各客の会計を求めよ
 
-  public User(string nickname, int old, string birth, string state)
+class Customer
+{
+  public int Age { get; set; }
+  public bool HasDiscount { get; set; } = false;
+  public int Payment { get; set; } = 0;
+
+  public Customer(int age)
   {
-    this.nickname = nickname;
-    this.old = old;
-    this.birth = birth;
-    this.state = state;
+    this.Age = age;
   }
 
-  public void ChangeName(string nickname)
+  public void Order(string category, int payment)
   {
-    this.nickname = nickname;
+    switch (category)
+    {
+      case "food":
+        this.Payment += this.HasDiscount ? (payment - 200) : payment;
+        break;
+
+      case "alcohol":
+        if (this.Age < 20)
+        {
+          break;
+        }
+        this.Payment += payment;
+        this.HasDiscount = true;
+        break;
+
+      case "softdrink":
+        this.Payment += payment;
+        break;
+    }
   }
 }
