@@ -2,74 +2,70 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
+using System.Diagnostics;
+using System.Collections;
 
 class Program
 {
-  static void Main()
-  {
-    string[] input = Console.ReadLine().Split(" ");
-    int N = int.Parse(input[0]);
-    int K = int.Parse(input[1]);
-
-    // 客数定義
-    List<Customer> customers = new List<Customer>();
-    for (int i = 0; i < N; i++)
+    static void Main()
     {
-      Customer customer = new Customer(int.Parse(Console.ReadLine()));
-      customers.Add(customer);
-    }
+        string[] input = Console.ReadLine().Split(" ");
+        int N = int.Parse(input[0]);
+        int Q = int.Parse(input[1]);
+        List<int> nums = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
 
-    // 注文ロジック
-    for (int i = 0; i < K; i++)
-    {
-      string[] orders = Console.ReadLine().Split(" ");
-      int index = int.Parse(orders[0]) - 1;
-      string category = orders[1];
-      int price = int.Parse(orders[2]);
-
-      customers[index].Order(category, price);
-    }
-
-    // 会計出力
-    foreach (Customer customer in customers)
-    {
-      Console.WriteLine(customer.Payment);
-    }
-  }
-}
-
-
-class Customer
-{
-  public int Age { get; set; }
-  public bool HasDiscount { get; set; } = false;
-  public int Payment { get; set; } = 0;
-
-  public Customer(int age)
-  {
-    this.Age = age;
-  }
-
-  public void Order(string category, int payment)
-  {
-    switch (category)
-    {
-      case "food":
-        this.Payment += this.HasDiscount ? (payment - 200) : payment;
-        break;
-
-      case "alcohol":
-        if (this.Age < 20)
+        // クエリ処理（Q回）
+        for (int i = 0; i < Q; i++)
         {
-          break;
-        }
-        this.Payment += payment;
-        this.HasDiscount = true;
-        break;
+            int[] query = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
+            switch (query[0])
+            {
+                case 0:
+                    PushBack(query[1], nums);
+                    break;
 
-      case "softdrink":
-        this.Payment += payment;
-        break;
+                case 1:
+                    PopBack(nums);
+                    break;
+
+                case 2:
+                    Print(nums);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
-  }
+
+
+    private static void PushBack(int x, List<int> nums)
+    {
+        nums.Add(x);
+    }
+
+    private static void PopBack(List<int> nums)
+    {
+        int index = nums.Count - 1;
+        nums.RemoveAt(index);
+    }
+
+    private static void Print(List<int> nums)
+    {
+        int lastIndex = nums.Count - 1;
+        for (int i = 0; i <= lastIndex; i++)
+        {
+            if (i != lastIndex)
+            {
+                Console.Write($"{nums[i]} ");
+            }
+            else
+            {
+                Console.WriteLine(nums[i]);
+            }
+        }
+    }
+
 }
