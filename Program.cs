@@ -9,10 +9,10 @@ class Program
     {
         int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
         int N = input[0];
-        int M = input[1];
+        int M = input[1] - 1;
 
-        int[] nums = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
-        List<int> result = nums.Where(n => n == N).ToList();
-        Console.WriteLine(result.Count);
+        List<string> nums = Console.ReadLine().Split(" ").ToList();
+        List<string> orderResult = nums.OrderBy(x => x).ToList();
+        Console.WriteLine(orderResult[M]);
     }
 }
