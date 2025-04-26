@@ -7,12 +7,12 @@ class Program
 {
     static void Main()
     {
-        int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
-        int N = input[0];
-        int M = input[1] - 1;
+        List<int> input = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
 
-        List<string> nums = Console.ReadLine().Split(" ").ToList();
-        List<string> orderResult = nums.OrderBy(x => x).ToList();
-        Console.WriteLine(orderResult[M]);
+        List<int> result = input.Distinct().OrderBy(x => x).ToList();
+        foreach (int num in result)
+        {
+            Console.WriteLine(num);
+        }
     }
 }
