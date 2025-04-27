@@ -16,8 +16,9 @@ class Program
         {
             nums.Add(int.Parse(Console.ReadLine()));
         }
-
-        int count = nums.Where(n => n == K).Count();
-        Console.WriteLine(count);
+        foreach (int num in nums)
+        {
+            Console.WriteLine(num + K);
+        }
     }
 }
