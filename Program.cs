@@ -2,24 +2,19 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 
 class Program
 {
     static void Main()
     {
-        List<int> input = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
-
+        int N = int.Parse(Console.ReadLine());
+        int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
         foreach (int num in input)
         {
-            if (num != -1)
-            {
-                Console.WriteLine(num);
-            }
-            else
-            {
-                Console.WriteLine(num);
-                break;
-            }
+            Console.WriteLine(num % 2 == 0
+                ? "even"
+                : "odd");
         }
     }
 }
