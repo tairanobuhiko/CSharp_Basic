@@ -8,18 +8,29 @@ class Program
 {
     static void Main()
     {
-        List<int> input = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
-        List<int> arr1 = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
-        List<int> arr2 = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
-
-        List<int> result = new List<int>();
-        foreach (int n in arr1)
+        int N = int.Parse(Console.ReadLine());
+        List<Employee> employees = new List<Employee>();
+        for (int i = 0; i < N; i++)
         {
-            foreach (int k in arr2)
-            {
-                result.Add(n * k);
-            }
+            string[] input = Console.ReadLine().Split(" ").ToArray();
+            employees.Add(new Employee(input[0], int.Parse(input[1])));
         }
-        Console.WriteLine(result.Max());
+
+        foreach (Employee employee in employees)
+        {
+            employee.Age += 1;
+            Console.WriteLine($"{employee.Name} {employee.Age}");
+        }
+    }
+
+    class Employee
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Age { get; set; } = 0;
+        public Employee(string name, int age)
+        {
+            this.Name = name;
+            this.Age = age;
+        }
     }
 }
