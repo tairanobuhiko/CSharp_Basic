@@ -8,13 +8,18 @@ class Program
 {
     static void Main()
     {
-        int N = int.Parse(Console.ReadLine());
-        int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
-        foreach (int num in input)
+        List<int> input = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
+        List<int> arr1 = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
+        List<int> arr2 = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
+
+        List<int> result = new List<int>();
+        foreach (int n in arr1)
         {
-            Console.WriteLine(num % 2 == 0
-                ? "even"
-                : "odd");
+            foreach (int k in arr2)
+            {
+                result.Add(n * k);
+            }
         }
+        Console.WriteLine(result.Max());
     }
 }
