@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        int month = int.Parse(Console.ReadLine());
+        bool succes = int.TryParse(Console.ReadLine(), out int month);
 
 
         string season = month switch
