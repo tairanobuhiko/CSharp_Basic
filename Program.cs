@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 class Program
 {
     static void Main()
     {
-        bool succes = int.TryParse(Console.ReadLine(), out int month);
+        bool succses = int.TryParse(Console.ReadLine(), out int N);
 
-
-        string season = month switch
+        for (int i = 0; i < N; i++)
         {
-            (>= 3 and <= 5) => "春",
-            (>= 6 and <= 8) => "夏",
-            (>= 9 and <= 11) => "秋",
-            (12 or 1 or 2) => "冬",
-            _ => "不正な月"
-        };
-        Console.WriteLine($"{month}月は{season}です");
+            string[] input = Console.ReadLine().Split(" ").ToArray();
+            TimeSpan targetTime = TimeSpan.Parse(input[0]);
+            int hour = int.Parse(input[1]);
+            int minute = int.Parse(input[2]);
+
+            TimeSpan addTime = new TimeSpan(hour, minute, 0);
+            DateTime baseTime = new DateTime(2025, 4, 29, targetTime.Hours, targetTime.Minutes, 0);
+            DateTime resultTime = baseTime + addTime;
+            Console.WriteLine(resultTime.ToString("HH:mm"));
+        }
     }
 }
