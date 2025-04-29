@@ -6,24 +6,14 @@ class Program
     {
         for (int i = 1; i <= 100; i++)
         {
-            switch (i)
+            string result = (i % 3, i % 5) switch
             {
-                case int _ when i % 15 == 0:
-                    Console.WriteLine("Fizz Buzz");
-                    break;
-
-                case int _ when i % 3 == 0:
-                    Console.WriteLine("Fizz");
-                    break;
-
-                case int _ when i % 5 == 0:
-                    Console.WriteLine("Buzz");
-                    break;
-
-                default:
-                    Console.WriteLine(i);
-                    break;
-            }
+                (0, 0) => "Fizz Buzz",
+                (0, _) => "Fizz",
+                (_, 0) => "Buzz",
+                _ => i.ToString()
+            };
+            Console.WriteLine(result);
         }
     }
 }
