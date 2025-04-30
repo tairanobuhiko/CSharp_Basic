@@ -5,23 +5,19 @@ class Program
 {
     static void Main()
     {
-        int N = int.Parse(Console.ReadLine());
-        string input;
-        while ((input = Console.ReadLine()) != null)
+        List<int> input = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
+        List<List<string>> board = new List<List<string>>();
+        int N = input[0];
+        for (int i = 0; i < N; i++)
         {
-            List<int> nums = input.Split(" ").Select(int.Parse).ToList();
-            int lastIndex = nums.Count - 1;
-            for (int i = 1; i <= lastIndex; i++)
-            {
-                if (i != lastIndex)
-                {
-                    Console.Write($"{nums[i]} ");
-                }
-                else
-                {
-                    Console.WriteLine(nums[i]);
-                }
-            }
+            board.Add(Console.ReadLine().Select(s => s.ToString()).ToList());
         }
+
+        int row = input[2] - 1;
+        int col = input[3] - 1;
+        string result = board[row][col] == "#"
+            ? "Yes"
+            : "No";
+        Console.WriteLine(result);
     }
 }
