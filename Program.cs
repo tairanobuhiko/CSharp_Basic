@@ -5,16 +5,14 @@ class Program
 {
     static void Main()
     {
-        int N = int.Parse(Console.ReadLine());
-        int result = 0;
-        for (int i = 0; i < N; i++)
+        int[] nums = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
+        string[] input = Console.ReadLine().Select(x => x.ToString()).ToArray();
+
+        List<string> result = new List<string>();
+        for (int i = nums[0] - 1; i < nums[1]; i++)
         {
-            int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
-            int calcResult = input[0] == input[1]
-                ? input[0] * input[1]
-                : input[0] + input[1];
-            result += calcResult;
+            result.Add(input[i]);
         }
-        Console.WriteLine(result);
+        Console.WriteLine(string.Join("", result));
     }
 }
