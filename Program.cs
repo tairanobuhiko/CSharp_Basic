@@ -5,14 +5,15 @@ class Program
 {
     static void Main()
     {
-        int[] nums = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
-        string[] input = Console.ReadLine().Select(x => x.ToString()).ToArray();
-
-        List<string> result = new List<string>();
-        for (int i = nums[0] - 1; i < nums[1]; i++)
+        string targetStr = Console.ReadLine();
+        string[] refferenceList = Console.ReadLine().Select(s => s.ToString()).ToArray();
+        int count = 0;
+        foreach (string s in refferenceList)
         {
-            result.Add(input[i]);
+            count += s == targetStr
+                ? 1
+                : 0;
         }
-        Console.WriteLine(string.Join("", result));
+        Console.WriteLine(count);
     }
 }
