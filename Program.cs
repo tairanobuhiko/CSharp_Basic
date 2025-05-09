@@ -1,22 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+// 投稿データのモデル（JSONと対応）
+public class Post
+{
+    [JsonPropertyName("userId")]
+    public int UserId { get; set; }
+
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("title")]
+    public string Title { get; set; }
+
+    [JsonPropertyName("body")]
+    public string Body { get; set; }
+}
+
 class Program
 {
-    static void Main()
+    static async Task Main(string[] args)
     {
-        int N = int.Parse(Console.ReadLine());
-        List<(string a, int n)> list = new List<(string, int)>();
-        for (int i = 0; i < N; i++)
-        {
-            string[] input = Console.ReadLine().Split(" ");
-            list.Add((input[0], int.Parse(input[1])));
-        }
+        // HttpClientのインスタンスを作成
+        using HttpClient client = new HttpClient();
 
-        List<(string, int)> result = list.OrderBy(item => item.n).ToList();
-        foreach ((string a, int num) tuple in result)
+        try
         {
-            Console.WriteLine(tuple.a);
+            // ① APIにGETリクエストを送信
+            HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/posts/1");
+
+            // ② ステータスコードが成功かどうか確認
+            response.EnsureSuccessStatusCode();
+
+            // ③ レスポンスの本文（JSON）を取得
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            // ④ JSONをC#オブジェクトに変換
+            Post post = JsonSerializer.Deserialize<Post>(responseBody);
+
+            // ⑤ 結果を表示
+            Console.WriteLine($"タイトル: {post.Title}");
+            Console.WriteLine($"本文: {post.Body}");
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"エラー: {e.Message}");
         }
     }
 }
