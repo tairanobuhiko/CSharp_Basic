@@ -30,7 +30,7 @@ class Program
         try
         {
             // ① APIにGETリクエストを送信
-            HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/posts/1");
+            HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/posts/");
 
             // ② ステータスコードが成功かどうか確認
             response.EnsureSuccessStatusCode();
@@ -38,12 +38,20 @@ class Program
             // ③ レスポンスの本文（JSON）を取得
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            // ④ JSONをC#オブジェクトに変換
-            Post post = JsonSerializer.Deserialize<Post>(responseBody);
+            // ④ JSONをC#オブジェクトに変換してリストで受け取る
+            List<Post>? posts = JsonSerializer.Deserialize<List<Post>>(responseBody);
 
-            // ⑤ 結果を表示
-            Console.WriteLine($"タイトル: {post.Title}");
-            Console.WriteLine($"本文: {post.Body}");
+            // ⑤ 結果を表示(5件だけ)
+            if (posts != null)
+            {
+                foreach (Post post in posts.Take(5))
+                {
+                    Console.WriteLine($"ユーザーID: {post.UserId}");
+                    Console.WriteLine($"投稿ID: {post.Id}");
+                    Console.WriteLine($"タイトル: {post.Title}");
+                    Console.WriteLine($"本文: {post.Body}");
+                }
+            }
         }
         catch (HttpRequestException e)
         {
