@@ -41,10 +41,15 @@ class Program
             // ④ JSONをC#オブジェクトに変換してリストで受け取る
             List<Post>? posts = JsonSerializer.Deserialize<List<Post>>(responseBody);
 
-            // ⑤ 結果を表示(5件だけ)
-            if (posts != null)
+            // ⑤ 特定のユーザーIDのみ抽出（Linq）
+            List<Post>? filterPosts = posts
+                .Where(p => p.UserId == 5)
+                .ToList();
+
+            // ⑥ 結果を表示(5件だけ)
+            if (filterPosts != null)
             {
-                foreach (Post post in posts.Take(5))
+                foreach (Post post in filterPosts)
                 {
                     Console.WriteLine($"ユーザーID: {post.UserId}");
                     Console.WriteLine($"投稿ID: {post.Id}");
