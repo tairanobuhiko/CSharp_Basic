@@ -6,11 +6,11 @@ class Program
     static void Main()
     {
         int N = int.Parse(Console.ReadLine());
-        List<(string name, string chooseKey)> users = new List<(string, string)>();
+        List<Tuple<string, string>> users = new List<Tuple<string, string>>();
         for (int i = 0; i < N; i++)
         {
             string[] input = Console.ReadLine().Split(" ");
-            (string, string) tuple = (input[0], input[1]);
+            Tuple<string, string> tuple = Tuple.Create(input[0], input[1]);
             users.Add(tuple);
         }
 
@@ -24,7 +24,7 @@ class Program
 
         foreach (var user in users)
         {
-            Console.WriteLine($"{user.name} {lists[user.chooseKey]}");
+            Console.WriteLine($"{user.Item1} {lists[user.Item2]}");
         }
     }
 }
