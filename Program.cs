@@ -5,26 +5,25 @@ class Program
 {
     static void Main()
     {
-        int N = int.Parse(Console.ReadLine());
-        List<Tuple<string, string>> users = new List<Tuple<string, string>>();
-        for (int i = 0; i < N; i++)
-        {
-            string[] input = Console.ReadLine().Split(" ");
-            Tuple<string, string> tuple = Tuple.Create(input[0], input[1]);
-            users.Add(tuple);
-        }
+        List<string> alphabet = new List<string>() {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+        };
 
-        int M = int.Parse(Console.ReadLine());
-        Dictionary<string, string> lists = new Dictionary<string, string>();
-        for (int i = 0; i < M; i++)
-        {
-            string[] input = Console.ReadLine().Split(" ");
-            lists.Add(input[0], input[1]);
-        }
+        string X = Console.ReadLine();
+        string Y = Console.ReadLine();
+        string C = Console.ReadLine();
 
-        foreach (var user in users)
+        int indexX = alphabet.IndexOf(X);
+        int indexY = alphabet.IndexOf(Y);
+        int indexC = alphabet.IndexOf(C);
+
+        if (indexX <= indexC && indexY >= indexC)
         {
-            Console.WriteLine($"{user.Item1} {lists[user.Item2]}");
+            Console.WriteLine("true");
+        }
+        else
+        {
+            Console.WriteLine("false");
         }
     }
 }
