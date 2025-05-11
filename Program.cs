@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 class Program
 {
     static void Main()
     {
-        List<string> alphabet = new List<string>() {
-            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-        };
-
-        string X = Console.ReadLine();
-        string Y = Console.ReadLine();
-        string C = Console.ReadLine();
-
-        int indexX = alphabet.IndexOf(X);
-        int indexY = alphabet.IndexOf(Y);
-        int indexC = alphabet.IndexOf(C);
-
-        if (indexX <= indexC && indexY >= indexC)
+        string s = Console.ReadLine();
+        List<string> t = Console.ReadLine().Select(x => x.ToString()).ToList();
+        int sLength = s.Length;
+        int tLength = t.Count;
+        int result = 0;
+        for (int i = 0; i <= tLength - sLength; i++)
         {
-            Console.WriteLine("true");
+            List<string> str = new List<string>();
+            for (int k = i; k < i + sLength; k++)
+            {
+                str.Add(t[k]);
+            }
+            string compareStr = String.Join("", str);
+            if (compareStr == s)
+            {
+                result += 1;
+            }
         }
-        else
-        {
-            Console.WriteLine("false");
-        }
+        Console.WriteLine(result);
     }
 }
