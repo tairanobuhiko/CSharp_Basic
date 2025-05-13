@@ -15,24 +15,15 @@ class Program
         for (int i = 0; i < N; i++)
         {
             string[] instance = Console.ReadLine().Split(" ");
-            switch (instance[0])
+
+            SuperCar car = instance[0] switch
             {
-                case "supercar":
-                    cars.Add(new SuperCar(int.Parse(instance[1]), int.Parse(instance[2])));
-                    break;
-
-                case "supersupercar":
-                    cars.Add(new SuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])));
-                    break;
-
-                case "supersupersupercar":
-                    cars.Add(new SuperSuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])));
-                    break;
-
-                default:
-                    Console.WriteLine("error");
-                    break;
-            }
+                "supercar" => new SuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
+                "supersupercar" => new SuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
+                "supersupersupercar" => new SuperSuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
+                _ => new SuperCar(int.Parse(instance[1]), int.Parse(instance[2]))
+            };
+            cars.Add(car);
         }
 
         for (int i = 0; i < K; i++)
