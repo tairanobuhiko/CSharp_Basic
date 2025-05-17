@@ -7,129 +7,82 @@ class Program
 {
     static void Main()
     {
-        string[] input = Console.ReadLine().Split(" ");
-        int N = int.Parse(input[0]);
-        int K = int.Parse(input[1]);
-
-        List<SuperCar> cars = new List<SuperCar>();
+        int N = 5;
+        List<Board> boards = new List<Board>();
         for (int i = 0; i < N; i++)
         {
-            string[] instance = Console.ReadLine().Split(" ");
-
-            SuperCar car = instance[0] switch
-            {
-                "supercar" => new SuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
-                "supersupercar" => new SuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
-                "supersupersupercar" => new SuperSuperSuperCar(int.Parse(instance[1]), int.Parse(instance[2])),
-                _ => new SuperCar(int.Parse(instance[1]), int.Parse(instance[2]))
-            };
-            cars.Add(car);
+            List<string> input = Console.ReadLine().Select(x => x.ToString()).ToList();
+            boards.Add(new Board(input));
         }
 
-        for (int i = 0; i < K; i++)
+        int O = JudgeWinner(boards, "O");
+        int X = JudgeWinner(boards, "X");
+        if ((O == 5 && X == 5) || (O < 5 && X < 5))
         {
-            string[] query = Console.ReadLine().Split(" ");
-            int index = int.Parse(query[0]) - 1;
-            string func = query[1];
-            switch (func)
-            {
-                case "run":
-                    cars[index].Run();
-                    break;
-
-                case "fly":
-                    if (cars[index] is SuperSuperCar flyableCar)
-                    {
-                        flyableCar.Fly();
-                    }
-                    break;
-
-                case "teleport":
-                    if (cars[index] is SuperSuperSuperCar teleportableCar)
-                    {
-                        teleportableCar.Teleport();
-                    }
-                    break;
-            }
+            Console.WriteLine("D");
         }
-        foreach (SuperCar car in cars)
+        else if (O == 5 && X < 5)
         {
-            Console.WriteLine(car.Distance);
+            Console.WriteLine("O");
+        }
+        else
+        {
+            Console.WriteLine("X");
         }
     }
 
-    class SuperCar
+    class Board
     {
-        protected int Fuel { get; set; }
-        protected int FuelEconomy { get; set; }
-        public int Distance { get; set; }
-
-        public SuperCar(int fuel, int fuelEconomy)
+        public List<string> cell { get; set; } = new List<string>();
+        public Board(List<string> input)
         {
-            this.Fuel = fuel;
-            this.FuelEconomy = fuelEconomy;
-        }
-        public void Run()
-        {
-            if (this.Fuel > 0)
-            {
-                this.Fuel -= 1;
-                this.Distance += this.FuelEconomy;
-            }
+            this.cell = input;
         }
     }
 
-    class SuperSuperCar : SuperCar
+    static int JudgeWinner(List<Board> boards, string target)
     {
-        public SuperSuperCar(int fuel, int fuelEconomy) : base(fuel, fuelEconomy)
+        // 横方向の探索
+        int result = 0;
+        foreach (Board board in boards)
         {
+            result = board.cell.Where(x => x.Contains(target)).ToList().Count;
+            if (result == 5) break;
         }
+        if (result == 5) return result;
 
-        public virtual void Fly()
+        // 縦方向の探索
+        for (int i = 0; i < 5; i++)
         {
-            if (this.Fuel >= 5)
+            result = 0;
+            for (int k = 0; k < 5; k++)
             {
-                this.Fuel -= 5;
-                this.Distance += (int)Math.Pow(this.FuelEconomy, 2);
+                result += boards[k].cell[i] == target
+                    ? 1
+                    : 0;
             }
-            else
-            {
-                Run();
-            }
+            if (result == 5) break;
         }
+        if (result == 5) return result;
 
-    }
-
-    class SuperSuperSuperCar : SuperSuperCar
-    {
-        public SuperSuperSuperCar(int fuel, int fuelEconomy) : base(fuel, fuelEconomy)
+        // 斜め方向の探索(1)
+        result = 0;
+        for (int i = 0; i < 5; i++)
         {
+            result += boards[i].cell[i] == target
+                ? 1
+                : 0;
         }
+        if (result == 5) return result;
 
-        public override void Fly()
+        // 斜め方向の探索(2)
+        result = 0;
+        for (int i = 0; i < 5; i++)
         {
-            if (this.Fuel >= 5)
-            {
-                this.Fuel -= 5;
-                this.Distance += 2 * (int)Math.Pow(this.FuelEconomy, 2);
-            }
-            else
-            {
-                Run();
-            }
+            result += boards[4 - i].cell[i] == target
+                ? 1
+                : 0;
         }
-
-        public void Teleport()
-        {
-            if (this.Fuel >= (int)Math.Pow(this.FuelEconomy, 2))
-            {
-                this.Fuel -= (int)Math.Pow(this.FuelEconomy, 2);
-                this.Distance += (int)Math.Pow(this.FuelEconomy, 4);
-            }
-            else
-            {
-                Fly();
-            }
-        }
+        return result;
     }
 }
