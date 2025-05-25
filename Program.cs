@@ -1,88 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Dynamic;
 using System.Linq;
 class Program
 {
     static void Main()
     {
-        int N = 5;
-        List<Board> boards = new List<Board>();
+        int[] input = Console.ReadLine().Split(" ").Select(int.Parse).ToArray();
+        int N = input[0];
+        int K = input[1];
+        List<Idol> members = new List<Idol>();
         for (int i = 0; i < N; i++)
         {
-            List<string> input = Console.ReadLine().Select(x => x.ToString()).ToList();
-            boards.Add(new Board(input));
+            string member = Console.ReadLine();
+            members.Add(new Idol(member));
         }
 
-        int O = JudgeWinner(boards, "O");
-        int X = JudgeWinner(boards, "X");
-        if ((O == 5 && X == 5) || (O < 5 && X < 5))
+        for (int i = 0; i < K; i++)
         {
-            Console.WriteLine("D");
-        }
-        else if (O == 5 && X < 5)
-        {
-            Console.WriteLine("O");
-        }
-        else
-        {
-            Console.WriteLine("X");
-        }
-    }
-
-    class Board
-    {
-        public List<string> cell { get; set; } = new List<string>();
-        public Board(List<string> input)
-        {
-            this.cell = input;
-        }
-    }
-
-    static int JudgeWinner(List<Board> boards, string target)
-    {
-        // 横方向の探索
-        int result = 0;
-        foreach (Board board in boards)
-        {
-            result = board.cell.Where(x => x.Contains(target)).ToList().Count;
-            if (result == 5) break;
-        }
-        if (result == 5) return result;
-
-        // 縦方向の探索
-        for (int i = 0; i < 5; i++)
-        {
-            result = 0;
-            for (int k = 0; k < 5; k++)
+            string[] prompt = Console.ReadLine().Split(" ");
+            switch (prompt[0])
             {
-                result += boards[k].cell[i] == target
-                    ? 1
-                    : 0;
+                case "handshake":
+                    Idol.HandShake(members);
+                    break;
+
+                case "join":
+                    Idol.Join(members, prompt[1]);
+                    break;
+
+                case "leave":
+                    Idol.Leave(members, prompt[1]);
+                    break;
+
+                default:
+                    break;
             }
-            if (result == 5) break;
         }
-        if (result == 5) return result;
+    }
 
-        // 斜め方向の探索(1)
-        result = 0;
-        for (int i = 0; i < 5; i++)
+    public class Idol
+    {
+        public string Name { get; set; }
+        public Idol(string name)
         {
-            result += boards[i].cell[i] == target
-                ? 1
-                : 0;
+            this.Name = name;
         }
-        if (result == 5) return result;
 
-        // 斜め方向の探索(2)
-        result = 0;
-        for (int i = 0; i < 5; i++)
+        public static void Join(List<Idol> members, string name)
         {
-            result += boards[4 - i].cell[i] == target
-                ? 1
-                : 0;
+            members.Add(new Idol(name));
         }
-        return result;
+
+        public static void Leave(List<Idol> members, string name)
+        {
+            int index = members.FindIndex(i => i.Name == name);
+            members.RemoveAt(index);
+        }
+
+        public static void HandShake(List<Idol> members)
+        {
+            if (members.Count == 0) return;
+            List<Idol> sortMember = members
+                .OrderBy(m => m.Name)
+                .ToList();
+            foreach (Idol member in sortMember)
+            {
+                Console.WriteLine(member.Name);
+            }
+        }
     }
 }
