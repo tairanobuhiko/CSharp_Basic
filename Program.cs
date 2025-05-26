@@ -1,39 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        string[] input = Console.ReadLine().Split();
-        int N = int.Parse(input[0]);
-        int K = int.Parse(input[1]);
+        string[] input = Console.ReadLine().Split(" ");
+        var uniqueWords = input.Distinct();
 
-        var members = new SortedSet<string>();
+        Dictionary<string, int> wordsCount = new Dictionary<string, int>();
 
-        for (int i = 0; i < N; i++)
+        foreach (string color in input)
         {
-            members.Add(Console.ReadLine());
+            if (wordsCount.ContainsKey(color))
+            {
+                wordsCount[color] += 1;
+            }
+            else
+            {
+                wordsCount[color] = 1;
+            }
         }
 
-        for (int i = 0; i < K; i++)
+        foreach (var pair in wordsCount)
         {
-            string[] prompt = Console.ReadLine().Split();
-            if (prompt[0] == "handshake")
-            {
-                foreach (string name in members)
-                {
-                    Console.WriteLine(name);
-                }
-            }
-            else if (prompt[0] == "join")
-            {
-                members.Add(prompt[1]);
-            }
-            else if (prompt[0] == "leave")
-            {
-                members.Remove(prompt[1]);
-            }
+            Console.WriteLine($"{pair.Key} {pair.Value}");
         }
     }
 }
