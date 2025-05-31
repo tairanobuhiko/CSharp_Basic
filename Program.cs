@@ -37,20 +37,11 @@ class Program
 
     static string ChangeCell(string cell)
     {
-        switch (cell)
+        return cell = cell switch
         {
-            case "#":
-                cell = ".";
-                break;
-
-            case ".":
-                cell = "#";
-                break;
-
-            default:
-                break;
-
-        }
-        return cell;
+            "#" => ".",
+            "." => "#",
+            _ => String.Empty
+        };
     }
 }
